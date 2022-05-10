@@ -30,4 +30,4 @@ module.exports = {
     await interaction.reply({ embeds: [exampleEmbed] });
 	console.log(`${"guildID : " + interaction.guild + "  name : " + interaction.guild.name}` + "  server slashcommand embed : " + `compelet`)
   },
-};
+};	
