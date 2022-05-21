@@ -1,8 +1,19 @@
-const { Client, Collection, Intents } = require("discord.js");
-const { token } = require("./config.json");
+//require('dotenv').config();
 const fs = require("fs");
+const { REST } = require("@discordjs/rest");
+const { Routes } = require("discord-api-types/v9");
+const { Client, Intents, Collection } = require("discord.js");
+const mongoose = require("mongoose");
+const { token, mongo_url } = require('./config.json')
+const client = new Client({
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Intents.FLAGS.GUILD_MEMBERS
+  ],
+});
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 client.commands = new Collection();
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
 
@@ -13,6 +24,15 @@ for (const file of commandFiles) {
 
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`);
+
+  mongoose
+    .connect(mongo_url, {
+      keepAlive: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
+    .then(() => console.log('DB connected'))
+    .catch(e => console.error(e));
 });
 
 client.on('interactionCreate', async interaction => {
@@ -23,7 +43,7 @@ client.on('interactionCreate', async interaction => {
 	if (!command) return;
 
 	try {
-		await command.execute(interaction);
+		await command.execute(interaction, client);
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: '명령어를 실행하는 데 오류가 발생했습니다.', ephemeral: true });

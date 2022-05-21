@@ -15,7 +15,7 @@ module.exports = {
 	    .addFields(
 			{ name: '서버 오너', value: `오너: <@${interaction.guild.ownerId}>`, inline: true },
 			//{ name: `\u200B`, value: `\u200B`},
-		    { name: '현재 멤버수', value: `맴버 : ${interaction.guild.memberCount} 명`, inline: true },
+		    { name: '현재 멤버수', value: `멤버 : ${interaction.guild.memberCount} 명`, inline: true },
 		    { name: '현재 채널수', value: `채팅 : ${interaction.guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').size} 개 \n 통화 : ${interaction.guild.channels.cache.filter(c => c.type === 'GUILD_VOICE').size} 개`, inline: true },
 			//{ name: `\u200B`, value: `\u200B`},
 		    { name: '사용 이모지', value: `갯수 : ${interaction.guild.emojis.cache.size} 개`, inline: true },
